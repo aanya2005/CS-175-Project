@@ -1,0 +1,418 @@
+i,db_id,question,gold_sql,pred_sql,latency_s,model,difficulty,EM,EX
+0,concert_singer,How many singers do we have?,SELECT count(*) FROM singer,SELECT COUNT(*) FROM singer;,0.7440917491912842,Mistral-7B-Instruct-v0.2,unknown,False,True
+1,concert_singer,What is the total number of singers?,SELECT count(*) FROM singer,SELECT COUNT(*) FROM singer;,0.5510179996490479,Mistral-7B-Instruct-v0.2,unknown,False,True
+2,concert_singer,"Show name, country, age for all singers ordered by age from the oldest to the youngest.","SELECT name ,  country ,  age FROM singer ORDER BY age DESC","SELECT singer.Name, singer.Country, singer.Age
+FROM singer
+ORDER BY singer.Age DESC;",1.4510369300842285,Mistral-7B-Instruct-v0.2,unknown,False,True
+3,concert_singer,"What are the names, countries, and ages for every singer in descending order of age?","SELECT name ,  country ,  age FROM singer ORDER BY age DESC","SELECT singer.Name, singer.Country, singer.Age
+FROM singer
+ORDER BY singer.Age DESC;",1.4257478713989258,Mistral-7B-Instruct-v0.2,unknown,False,True
+4,concert_singer,"What is the average, minimum, and maximum age of all singers from France?","SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'","SELECT AVG(singer.Age), MIN(singer.Age), MAX(singer.Age)
+FROM singer
+WHERE Country = 'France';",2.039289712905884,Mistral-7B-Instruct-v0.2,unknown,False,True
+5,concert_singer,"What is the average, minimum, and maximum age for all French singers?","SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'","SELECT AVG(singer.Age) AS average_age, MIN(singer.Age) AS minimum_age, MAX(singer.Age) AS maximum_age
+FROM singer
+WHERE Country = 'French';",2.7720627784729004,Mistral-7B-Instruct-v0.2,unknown,False,False
+6,concert_singer,Show the name and the release year of the song by the youngest singer.,"SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1","SELECT singer.Name, singer.Song_release_year
+FROM singer
+ORDER BY singer.Age ASC
+LIMIT 1;",1.6544263362884521,Mistral-7B-Instruct-v0.2,unknown,False,False
+7,concert_singer,What are the names and release years for all the songs of the youngest singer?,"SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1","SELECT singer.Name, singer.Song_release_year
+FROM singer
+ORDER BY singer.Age ASC
+LIMIT 1;",1.63265061378479,Mistral-7B-Instruct-v0.2,unknown,False,False
+8,concert_singer,What are all distinct countries where singers above age 20 are from?,SELECT DISTINCT country FROM singer WHERE age  >  20,"SELECT singer.Country
+FROM singer
+WHERE Age > 20;",0.9459395408630371,Mistral-7B-Instruct-v0.2,unknown,False,False
+9,concert_singer,What are  the different countries with singers above age 20?,SELECT DISTINCT country FROM singer WHERE age  >  20,"SELECT singer.Country
+FROM singer
+WHERE Age > 20;",0.9540901184082031,Mistral-7B-Instruct-v0.2,unknown,False,False
+10,concert_singer,Show all countries and the number of singers in each country.,"SELECT country ,  count(*) FROM singer GROUP BY country","SELECT Country, COUNT(*) as Number_of_Singers
+FROM singer
+GROUP BY Country;",1.269484281539917,Mistral-7B-Instruct-v0.2,unknown,False,True
+11,concert_singer,How many singers are from each country?,"SELECT country ,  count(*) FROM singer GROUP BY country","SELECT Country, COUNT(singer.Singer_ID) as Num_Singers
+FROM singer
+GROUP BY Country;",1.495607614517212,Mistral-7B-Instruct-v0.2,unknown,False,True
+12,concert_singer,List all song names by singers above the average age.,SELECT song_name FROM singer WHERE age  >  (SELECT avg(age) FROM singer),"SELECT singer.Song_Name
+FROM singer
+JOIN singer_in_concert ON singer.Singer_ID = singer_in_concert.Singer_ID
+JOIN concert ON singer_in_concert.concert_ID = concert.concert_ID
+JOIN stadium ON concert.Stadium_ID = stadium.Stadium_ID
+WHERE singer.Age > (
+  SELECT AVG(Age)
+  FROM singer
+);",5.337918758392334,Mistral-7B-Instruct-v0.2,unknown,False,False
+13,concert_singer,What are all the song names by singers who are older than average?,SELECT song_name FROM singer WHERE age  >  (SELECT avg(age) FROM singer),"SELECT singer.Name, singer.Song_Name
+ FROM singer
+ JOIN singer_in_concert ON singer.Singer_ID = singer_in_concert.Singer_ID
+ JOIN concert ON concert.concert_ID = singer_in_concert.concert_ID
+ JOIN stadium ON concert.Stadium_ID = stadium.Stadium_ID
+ WHERE singer.Age > (
+ SELECT AVG(singer2.Age)
+ FROM singer AS singer2
+) ;",5.78524112701416,Mistral-7B-Instruct-v0.2,unknown,False,False
+14,concert_singer,Show location and name for all stadiums with a capacity between 5000 and 10000.,"SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000","SELECT Name, Location FROM stadium WHERE Capacity BETWEEN 5000 AND 10000;",1.4397618770599365,Mistral-7B-Instruct-v0.2,unknown,False,True
+15,concert_singer,What are the locations and names of all stations with capacity between 5000 and 10000?,"SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000","SELECT Name, Location FROM stadium WHERE Capacity BETWEEN 5000 AND 10000;",1.4742176532745361,Mistral-7B-Instruct-v0.2,unknown,False,True
+16,concert_singer,What is the maximum capacity and the average of all stadiums ?,"select max(capacity), average from stadium","SELECT MAX(Capacity), AVG(Capacity) FROM stadium;",0.8041558265686035,Mistral-7B-Instruct-v0.2,unknown,False,False
+17,concert_singer,What is the average and maximum capacities for all stadiums ?,"select avg(capacity) ,  max(capacity) from stadium","SELECT AVG(Capacity) AS Average, MAX(Capacity) AS Maximum FROM stadium;",1.0847530364990234,Mistral-7B-Instruct-v0.2,unknown,False,True
+18,concert_singer,What is the name and capacity for the stadium with highest average attendance?,"SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1","SELECT Name, Capacity FROM stadium
+ ORDER BY Average DESC
+ LIMIT 1;",1.0749311447143555,Mistral-7B-Instruct-v0.2,unknown,False,True
+19,concert_singer,What is the name and capacity for the stadium with the highest average attendance?,"SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1","SELECT Name, Capacity FROM stadium
+ ORDER BY Average DESC
+ LIMIT 1;",1.0485813617706299,Mistral-7B-Instruct-v0.2,unknown,False,True
+20,concert_singer,How many concerts are there in year 2014 or 2015?,SELECT count(*) FROM concert WHERE YEAR  =  2014 OR YEAR  =  2015,"SELECT COUNT(*) FROM concert WHERE Year IN (2014, 2015);",1.1772563457489014,Mistral-7B-Instruct-v0.2,unknown,False,True
+21,concert_singer,How many concerts occurred in 2014 or 2015?,SELECT count(*) FROM concert WHERE YEAR  =  2014 OR YEAR  =  2015,"SELECT COUNT(*) FROM concert WHERE Year IN (2014, 2015);",1.1754307746887207,Mistral-7B-Instruct-v0.2,unknown,False,True
+22,concert_singer,Show the stadium name and the number of concerts in each stadium.,"SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id","SELECT Name, COUNT(concert.concert_ID) as NumberOfConcerts
+FROM stadium
+JOIN concert ON stadium.Stadium_ID = concert.Stadium_ID
+GROUP BY Name;",2.414386510848999,Mistral-7B-Instruct-v0.2,unknown,False,False
+23,concert_singer,"For each stadium, how many concerts play there?","SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id","SELECT COUNT(*) as Concert_Count
+ FROM concert
+ WHERE Stadium_ID = <Stadium_ID>;",1.3700239658355713,Mistral-7B-Instruct-v0.2,unknown,False,False
+24,concert_singer,Show the stadium name and capacity with most number of concerts in year 2014 or after.,"SELECT T2.name ,  T2.capacity FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  >=  2014 GROUP BY T2.stadium_id ORDER BY count(*) DESC LIMIT 1","SELECT s.Name, stadium.Capacity
+ FROM concert c
+ JOIN stadium ON c.Stadium_ID = stadium.Stadium_ID
+ JOIN singer_in_concert sic ON c.concert_ID = sic.concert_ID
+ JOIN singer s ON sic.Singer_ID = s.Singer_ID
+ WHERE Year >= 2014
+ GROUP BY s.Name, stadium.Capacity
+ ORDER BY COUNT(*) DESC
+ LIMIT 1;",5.495553731918335,Mistral-7B-Instruct-v0.2,unknown,False,False
+25,concert_singer,What is the name and capacity of the stadium with the most concerts after 2013 ?,"select t2.name ,  t2.capacity from concert as t1 join stadium as t2 on t1.stadium_id  =  t2.stadium_id where t1.year  >  2013 group by t2.stadium_id order by count(*) desc limit 1","SELECT Name, Capacity
+FROM stadium s
+JOIN (
+  SELECT Stadium_ID
+  FROM concert c
+  JOIN singer_in_concert sc ON c.concert_ID = sc.concert_ID
+  WHERE Year > 2013
+  GROUP BY Stadium_ID
+  ORDER BY COUNT(*) DESC
+  LIMIT 1
+) t ON s.Stadium_ID = t.Stadium_ID;",5.162230014801025,Mistral-7B-Instruct-v0.2,unknown,False,True
+26,concert_singer,Which year has most number of concerts?,SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1,"SELECT Year, COUNT(*) as Concert_Count
+ FROM concert
+ GROUP BY Year
+ ORDER BY Concert_Count DESC
+ LIMIT 1;",1.8589038848876953,Mistral-7B-Instruct-v0.2,unknown,False,False
+27,concert_singer,What is the year that had the most concerts?,SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1,"SELECT Year
+FROM concert
+GROUP BY Year
+ORDER BY COUNT(*) DESC
+LIMIT 1;",1.2675566673278809,Mistral-7B-Instruct-v0.2,unknown,False,True
+28,concert_singer,Show the stadium names without any concert.,SELECT name FROM stadium WHERE stadium_id NOT IN (SELECT stadium_id FROM concert),SELECT Name FROM stadium WHERE Stadium_ID NOT IN (SELECT Stadium_ID FROM concert);,0.9973945617675781,Mistral-7B-Instruct-v0.2,unknown,False,True
+29,concert_singer,What are the names of the stadiums without any concerts?,SELECT name FROM stadium WHERE stadium_id NOT IN (SELECT stadium_id FROM concert),"SELECT Name FROM stadium
+ WHERE Stadium_ID NOT IN (SELECT Stadium_ID FROM concert);",1.0666143894195557,Mistral-7B-Instruct-v0.2,unknown,False,True
+30,concert_singer,Show countries where a singer above age 40 and a singer below 30 are from.,SELECT country FROM singer WHERE age  >  40 INTERSECT SELECT country FROM singer WHERE age  <  30,"SELECT s.Country
+FROM singer s
+WHERE Age > 40
+UNION ALL
+SELECT s.Country
+FROM singer s
+WHERE Age < 30;",1.9535949230194092,Mistral-7B-Instruct-v0.2,unknown,False,False
+31,concert_singer,Show names for all stadiums except for stadiums having a concert in year 2014.,SELECT name FROM stadium EXCEPT SELECT T2.name FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  =  2014,"SELECT Name FROM stadium
+ WHERE Stadium_ID NOT IN (
+ SELECT Stadium_ID FROM concert
+ WHERE Year = 2014
+)",1.6622223854064941,Mistral-7B-Instruct-v0.2,unknown,False,False
+32,concert_singer,What are the names of all stadiums that did not have a concert in 2014?,SELECT name FROM stadium EXCEPT SELECT T2.name FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  =  2014,"SELECT Name FROM stadium
+ WHERE Stadium_ID NOT IN (
+ SELECT stadium.Stadium_ID FROM concert
+ WHERE Year = 2014
+)",1.8051748275756836,Mistral-7B-Instruct-v0.2,unknown,False,False
+33,concert_singer,Show the name and theme for all concerts and the number of singers in each concert.,"SELECT T2.concert_name ,  T2.theme ,  count(*) FROM singer_in_concert AS T1 JOIN concert AS T2 ON T1.concert_id  =  T2.concert_id GROUP BY T2.concert_id","SELECT concert.concert_Name, theme, (SELECT COUNT(*) FROM singer_in_concert WHERE singer_in_concert.concert_ID = concert.concert_ID) as Number_of_Singers
+FROM concert;",2.7384660243988037,Mistral-7B-Instruct-v0.2,unknown,False,True
+34,concert_singer,"What are the names , themes , and number of singers for every concert ?","select t2.concert_name ,  t2.theme ,  count(*) from singer_in_concert as t1 join concert as t2 on t1.concert_id  =  t2.concert_id group by t2.concert_id","SELECT s.Name, c.concert_Name, COUNT(*) as Number_of_Singers
+FROM singer s
+JOIN singer_in_concert sic ON s.Singer_ID = sic.Singer_ID
+JOIN concert c ON sic.concert_ID = c.concert_ID
+GROUP BY c.concert_Name, s.Name;",4.282739639282227,Mistral-7B-Instruct-v0.2,unknown,False,False
+35,concert_singer,List singer names and number of concerts for each singer.,"SELECT T2.name ,  count(*) FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id GROUP BY T2.singer_id","SELECT singer.Name, COUNT(*) as Number_of_Concerts
+FROM singer
+JOIN singer_in_concert ON singer.Singer_ID = singer_in_concert.Singer_ID
+GROUP BY singer.Name;",2.7375240325927734,Mistral-7B-Instruct-v0.2,unknown,False,False
+36,concert_singer,What are the names of the singers and number of concerts for each person?,"SELECT T2.name ,  count(*) FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id GROUP BY T2.singer_id","SELECT singer.Name, COUNT(*) as Number_of_Concerts
+ FROM singer
+ JOIN singer_in_concert ON singer.Singer_ID = singer_in_concert.Singer_ID
+ GROUP BY singer.Name;",2.8336033821105957,Mistral-7B-Instruct-v0.2,unknown,False,False
+37,concert_singer,List all singer names in concerts in year 2014.,SELECT T2.name FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id JOIN concert AS T3 ON T1.concert_id  =  T3.concert_id WHERE T3.year  =  2014,"SELECT singer.Name
+FROM singer
+JOIN singer_in_concert ON singer.Singer_ID = singer_in_concert.Singer_ID
+JOIN concert ON singer_in_concert.concert_ID = concert.concert_ID
+WHERE concert.Year = 2014;",3.5829885005950928,Mistral-7B-Instruct-v0.2,unknown,False,True
+38,concert_singer,What are the names of the singers who performed in a concert in 2014?,SELECT T2.name FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id JOIN concert AS T3 ON T1.concert_id  =  T3.concert_id WHERE T3.year  =  2014,"SELECT singer.Name
+FROM singer
+JOIN singer_in_concert ON singer.Singer_ID = singer_in_concert.Singer_ID
+JOIN concert ON singer_in_concert.concert_ID = concert.concert_ID
+WHERE concert.Year = 2014;",3.5198750495910645,Mistral-7B-Instruct-v0.2,unknown,False,True
+39,concert_singer,what is the name and nation of the singer who have a song having 'Hey' in its name?,"SELECT name ,  country FROM singer WHERE song_name LIKE '%Hey%'","SELECT singer.Name, singer.Country
+ FROM singer
+ INNER JOIN singer_in_concert ON singer.Singer_ID = singer_in_concert.Singer_ID
+ INNER JOIN concert ON singer_in_concert.concert_ID = concert.concert_ID
+ WHERE concert.concert_Name LIKE '%Hey%'",3.9696459770202637,Mistral-7B-Instruct-v0.2,unknown,False,False
+40,concert_singer,What is the name and country of origin of every singer who has a song with the word 'Hey' in its title?,"SELECT name ,  country FROM singer WHERE song_name LIKE '%Hey%'","SELECT singer.Name, singer.Country
+ FROM singer
+ INNER JOIN singer_in_concert ON singer.Singer_ID = singer_in_concert.Singer_ID
+ INNER JOIN concert ON singer_in_concert.concert_ID = concert.concert_ID
+ WHERE concert.concert_Name LIKE '%Hey%' ;",3.926474094390869,Mistral-7B-Instruct-v0.2,unknown,False,False
+41,concert_singer,Find the name and location of the stadiums which some concerts happened in the years of both 2014 and 2015.,"SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2014 INTERSECT SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2015","SELECT stadium.Name, stadium.Location
+ FROM stadium
+ JOIN concert ON stadium.Stadium_ID = concert.Stadium_ID
+ WHERE concert.Year IN (2014, 2015)
+ GROUP BY stadium.Stadium_ID
+ HAVING COUNT(DISTINCT concert.Year) = 2;",3.9197561740875244,Mistral-7B-Instruct-v0.2,unknown,False,True
+42,concert_singer,What are the names and locations of the stadiums that had concerts that occurred in both 2014 and 2015?,"SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2014 INTERSECT SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2015","SELECT s.Name, s.Location
+ FROM stadium s
+ JOIN concert c ON s.Stadium_ID = c.Stadium_ID
+ WHERE c.Year IN (2014, 2015)
+ GROUP BY s.Stadium_ID, s.Name, s.Location
+ HAVING COUNT(DISTINCT c.Year) = 2;",5.369911193847656,Mistral-7B-Instruct-v0.2,unknown,False,True
+43,concert_singer,Find the number of concerts happened in the stadium with the highest capacity .,select count(*) from concert where stadium_id = (select stadium_id from stadium order by capacity desc limit 1),"SELECT COUNT(*) FROM concert
+WHERE Stadium_ID IN (
+  SELECT Stadium_ID FROM stadium
+  ORDER BY Capacity DESC
+  LIMIT 1
+);",2.228569746017456,Mistral-7B-Instruct-v0.2,unknown,False,True
+44,concert_singer,What are the number of concerts that occurred in the stadium with the largest capacity ?,select count(*) from concert where stadium_id = (select stadium_id from stadium order by capacity desc limit 1),"SELECT COUNT(*) FROM concert
+ WHERE Stadium_ID IN (
+ SELECT Stadium_ID FROM stadium
+ ORDER BY Capacity DESC
+ LIMIT 1
+);",2.014049768447876,Mistral-7B-Instruct-v0.2,unknown,False,True
+45,pets_1,Find the number of pets whose weight is heavier than 10.,SELECT count(*) FROM pets WHERE weight  >  10,SELECT COUNT(*) FROM Pets WHERE weight > 10;,0.9216978549957275,Mistral-7B-Instruct-v0.2,unknown,False,True
+46,pets_1,How many pets have a greater weight than 10?,SELECT count(*) FROM pets WHERE weight  >  10,SELECT COUNT(*) FROM Pets WHERE weight > 10;,1.047654390335083,Mistral-7B-Instruct-v0.2,unknown,False,True
+47,pets_1,Find the weight of the youngest dog.,SELECT weight FROM pets ORDER BY pet_age LIMIT 1,"SELECT Pets.weight
+FROM Pets
+JOIN Has_Pet ON Pets.PetID = Has_Pet.PetID
+WHERE Has_Pet.StuID IN (
+  SELECT StuID
+  FROM Student
+  WHERE Major = 'Dogs' -- Assuming 'Dogs' is the major for students who own dogs
+  AND (Sex = 'Male' OR Sex = 'Female') -- Assuming both males and females can own dogs
+  ORDER BY Age ASC
+  LIMIT 1
+)
+ORDER BY Pets.weight ASC -- In case of a tie, return the lightest dog
+LIMIT 1;",8.215954780578613,Mistral-7B-Instruct-v0.2,unknown,False,False
+48,pets_1,How much does the youngest dog weigh?,SELECT weight FROM pets ORDER BY pet_age LIMIT 1,"SELECT weight
+FROM Pets
+WHERE PetType = 'dog'
+AND pet_age = (
+  SELECT MIN(Age)
+  FROM Student s
+  JOIN Has_Pet hp ON s.StuID = hp.StuID
+  JOIN Pets p ON hp.PetID = p.PetID
+)
+;",4.438395738601685,Mistral-7B-Instruct-v0.2,unknown,False,False
+49,pets_1,Find the maximum weight for each type of pet. List the maximum weight and pet type.,"SELECT max(weight) ,  petType FROM pets GROUP BY petType","SELECT Pets.PetType, MAX(Pets.weight) as MaxWeight
+FROM Pets
+GROUP BY Pets.PetType;",1.999497890472412,Mistral-7B-Instruct-v0.2,unknown,False,False
+50,pets_1,List the maximum weight and type for each type of pet.,"SELECT max(weight) ,  petType FROM pets GROUP BY petType","SELECT PetType, MAX(weight) as max_weight FROM Pets GROUP BY PetType;",1.503340482711792,Mistral-7B-Instruct-v0.2,unknown,False,False
+51,pets_1,Find number of pets owned by students who are older than 20.,SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.age  >  20,"SELECT COUNT(*) FROM Has_Pet 
+WHERE Student.Age > 20;
+
+-- Note: This query assumes an implicit JOIN between Has_Pet and Student tables based on the common StuID field.",2.7151925563812256,Mistral-7B-Instruct-v0.2,unknown,False,False
+52,pets_1,How many pets are owned by students that have an age greater than 20?,SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.age  >  20,SELECT COUNT(*) FROM Pets JOIN Has_Pet ON Pets.PetID = Has_Pet.PetID JOIN Student ON Has_Pet.StuID = Student.StuID WHERE Student.Age > 20;,2.6319475173950195,Mistral-7B-Instruct-v0.2,unknown,False,True
+53,pets_1,Find the number of dog pets that are raised by female students (with sex F).,SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog',SELECT COUNT(*) FROM Pets WHERE PetType = 'dog' AND (SELECT Sex FROM Student WHERE Student.StuID = Has_Pet.StuID) = 'F';,2.0290958881378174,Mistral-7B-Instruct-v0.2,unknown,False,False
+54,pets_1,How many dog pets are raised by female students?,SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog',SELECT COUNT(*) FROM Has_Pet  inner join Student ON Has_Pet.StuID = Student.StuID  inner join Pets ON Has_Pet.PetID = Pets.PetID WHERE Student.Sex = 'Female' AND Pets.PetType = 'Dog';,3.2963919639587402,Mistral-7B-Instruct-v0.2,unknown,False,False
+55,pets_1,Find the number of distinct type of pets.,SELECT count(DISTINCT pettype) FROM pets,SELECT DISTINCT PetType FROM Pets;,0.6708636283874512,Mistral-7B-Instruct-v0.2,unknown,False,False
+56,pets_1,How many different types of pet are there?,SELECT count(DISTINCT pettype) FROM pets,SELECT DISTINCT PetType FROM Pets;,0.6632130146026611,Mistral-7B-Instruct-v0.2,unknown,False,False
+57,pets_1,Find the first name of students who have cat or dog pet.,SELECT DISTINCT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' OR T3.pettype  =  'dog',"SELECT Fname FROM Student
+INNER JOIN Has_Pet ON Student.StuID = Has_Pet.StuID
+INNER JOIN Pets ON Has_Pet.PetID = Pets.PetID
+WHERE (PetType = 'cat' OR PetType = 'dog')",3.101302146911621,Mistral-7B-Instruct-v0.2,unknown,False,False
+58,pets_1,What are the first names of every student who has a cat or dog as a pet?,SELECT DISTINCT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' OR T3.pettype  =  'dog',"SELECT Student.Fname
+FROM Student
+JOIN Has_Pet ON Student.StuID = Has_Pet.StuID
+JOIN Pets ON Has_Pet.PetID = Pets.PetID
+WHERE (PetType = 'cat' OR PetType = 'dog')",3.0817248821258545,Mistral-7B-Instruct-v0.2,unknown,False,False
+59,pets_1,Find the first name of students who have both cat and dog pets .,select t1.fname from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid join pets as t3 on t3.petid  =  t2.petid where t3.pettype  =  'cat' intersect select t1.fname from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid join pets as t3 on t3.petid  =  t2.petid where t3.pettype  =  'dog',"SELECT S.Fname
+FROM Student S
+INNER JOIN Has_Pet HP1 ON S.StuID = HP1.StuID
+INNER JOIN Pets P1 ON HP1.PetID = P1.PetID
+INNER JOIN Has_Pet HP2 ON S.StuID = HP2.StuID
+INNER JOIN Pets P2 ON HP2.PetID = P2.PetID
+WHERE P1.PetType = 'cat' AND P2.PetType = 'dog'",5.689077854156494,Mistral-7B-Instruct-v0.2,unknown,False,True
+60,pets_1,What are the students' first names who have both cats and dogs as pets?,SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' INTERSECT SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog',"SELECT S.Fname
+FROM Student S
+JOIN Has_Pet HP1 ON S.StuID = HP1.StuID
+JOIN Pets P1 ON HP1.PetID = P1.PetID
+JOIN Has_Pet HP2 ON S.StuID = HP2.StuID
+JOIN Pets P2 ON HP2.PetID = P2.PetID
+WHERE P1.PetType = 'cat' AND P2.PetType = 'dog';",5.300183057785034,Mistral-7B-Instruct-v0.2,unknown,False,True
+61,pets_1,Find the major and age of students who do not have a cat pet.,"SELECT major ,  age FROM student WHERE stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')","SELECT Student.Major, Student.Age
+FROM Student
+WHERE Student.StuID NOT IN (
+  SELECT Has_Pet.StuID
+  FROM Has_Pet
+  INNER JOIN Pets ON Has_Pet.PetID = Pets.PetID
+  WHERE Pets.PetType = 'cat'
+)",3.6632323265075684,Mistral-7B-Instruct-v0.2,unknown,False,True
+62,pets_1,"What major is every student who does not own a cat as a pet, and also how old are they?","SELECT major ,  age FROM student WHERE stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')","SELECT S.Major, S.Age
+FROM Student S
+LEFT JOIN Has_Pet HP ON S.StuID = HP.StuID
+LEFT JOIN Pets P ON HP.PetID = P.PetID
+WHERE P.PetType != 'Cat' AND P.PetID IS NULL;",3.444169044494629,Mistral-7B-Instruct-v0.2,unknown,False,False
+63,pets_1,Find the id of students who do not have a cat pet.,SELECT stuid FROM student EXCEPT SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat',"SELECT Student.StuID
+FROM Student
+WHERE NOT EXISTS (
+  SELECT 1
+  FROM Has_Pet
+  JOIN Pets ON Has_Pet.PetID = Pets.PetID
+  WHERE Student.StuID = Has_Pet.StuID
+  AND Pets.PetType = 'cat'
+)",3.81864070892334,Mistral-7B-Instruct-v0.2,unknown,False,True
+64,pets_1,What are the ids of the students who do not own cats as pets?,SELECT stuid FROM student EXCEPT SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat',"SELECT Student.StuID
+FROM Student
+WHERE (SELECT COUNT(*) FROM Has_Pet HP INNER JOIN Pets P ON HP.PetID = P.PetID
+       WHERE Student.StuID = HP.StuID AND PetType = 'cat') = 0;",3.2739970684051514,Mistral-7B-Instruct-v0.2,unknown,False,True
+65,pets_1,Find the first name and age of students who have a dog but do not have a cat as a pet.,"SELECT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog' AND T1.stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')","SELECT Student.Fname, Student.Age
+FROM Student
+JOIN Has_Pet ON Student.StuID = Has_Pet.StuID
+LEFT JOIN Has_Pet AS hc ON Student.StuID = hc.StuID AND Pets.PetType = 'cat'
+WHERE Has_Pet.PetID IS NOT NULL AND hc.PetID IS NULL AND PetType = 'dog';",10.24489688873291,Mistral-7B-Instruct-v0.2,unknown,False,False
+66,pets_1,What is the first name of every student who has a dog but does not have a cat?,"SELECT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog' AND T1.stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')","SELECT S.Fname
+FROM Student S
+JOIN Has_Pet HP ON S.StuID = HP.StuID
+JOIN Pets P ON HP.PetID = P.PetID
+WHERE P.PetType = 'dog'
+AND NOT EXISTS (
+ SELECT 1
+ FROM Has_Pet HC, Pets C
+ WHERE HC.StuID = S.StuID
+ AND P.PetType = 'cat'
+)",11.599466562271118,Mistral-7B-Instruct-v0.2,unknown,False,False
+67,pets_1,Find the type and weight of the youngest pet.,"SELECT pettype ,  weight FROM pets ORDER BY pet_age LIMIT 1","SELECT Pets.PetType, Pets.weight
+FROM Student AS s
+JOIN Has_Pet AS hp ON s.StuID = hp.StuID
+JOIN Pets AS p ON hp.PetID = p.PetID
+ORDER BY p.pet_age ASC
+LIMIT 1;",8.323190689086914,Mistral-7B-Instruct-v0.2,unknown,False,False
+68,pets_1,"What type of pet is the youngest animal, and how much does it weigh?","SELECT pettype ,  weight FROM pets ORDER BY pet_age LIMIT 1","SELECT Pets.PetType, Pets.weight
+FROM Student AS s
+JOIN Has_Pet AS hp ON s.StuID = hp.StuID
+JOIN Pets AS p ON hp.PetID = p.PetID
+ORDER BY p.pet_age ASC
+LIMIT 1;",8.015887975692749,Mistral-7B-Instruct-v0.2,unknown,False,False
+69,pets_1,Find the id and weight of all pets whose age is older than 1.,"SELECT petid ,  weight FROM pets WHERE pet_age  >  1","SELECT Pets.PetID, Pets.weight
+FROM Pets
+JOIN Has_Pet ON Pets.PetID = Has_Pet.PetID
+JOIN Student ON Has_Pet.StuID = Student.StuID
+WHERE Student.Age > 1;",7.2034080028533936,Mistral-7B-Instruct-v0.2,unknown,False,False
+70,pets_1,What is the id and weight of every pet who is older than 1?,"SELECT petid ,  weight FROM pets WHERE pet_age  >  1","SELECT Pets.PetID, Pets.weight
+FROM Has_Pet
+JOIN Pets ON Has_Pet.PetID = Pets.PetID
+WHERE (Select count(*) from Student s WHERE Has_Pet.StuID = s.StuID) > 0 AND Pets.pet_age > 1;",8.404309749603271,Mistral-7B-Instruct-v0.2,unknown,False,True
+71,pets_1,Find the average and maximum age for each type of pet.,"SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype","SELECT PetType, AVG(Pets.pet_age), MAX(Pets.pet_age)
+FROM Student INNER JOIN Has_Pet ON Student.StuID = Has_Pet.StuID
+INNER JOIN Pets ON Has_Pet.PetID = Pets.PetID
+GROUP BY PetType;",8.404357433319092,Mistral-7B-Instruct-v0.2,unknown,False,False
+72,pets_1,What is the average and maximum age for each pet type?,"SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype","SELECT PetType, AVG(Pets.pet_age), MAX(Pets.pet_age)
+FROM Student INNER JOIN Has_Pet ON Student.StuID = Has_Pet.StuID
+INNER JOIN Pets ON Has_Pet.PetID = Pets.PetID
+GROUP BY PetType;",8.210897207260132,Mistral-7B-Instruct-v0.2,unknown,False,False
+73,pets_1,Find the average weight for each pet type.,"SELECT avg(weight) ,  pettype FROM pets GROUP BY pettype","SELECT PetType, AVG(weight) as avg_weight
+FROM Pets
+GROUP BY PetType;",2.969578266143799,Mistral-7B-Instruct-v0.2,unknown,False,False
+74,pets_1,What is the average weight for each type of pet?,"SELECT avg(weight) ,  pettype FROM pets GROUP BY pettype","SELECT PetType, AVG(weight) as avg_weight
+FROM Pets
+GROUP BY PetType;",2.950939655303955,Mistral-7B-Instruct-v0.2,unknown,False,False
+75,pets_1,Find the first name and age of students who have a pet.,"SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid","SELECT Student.Fname, Student.Age
+FROM Student
+JOIN Has_Pet ON Student.StuID = Has_Pet.StuID;",4.01205849647522,Mistral-7B-Instruct-v0.2,unknown,False,False
+76,pets_1,What are the different first names and ages of the students who do have pets?,"SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid","SELECT Student.Fname, Student.Age
+ FROM Student
+ INNER JOIN Has_Pet ON Student.StuID = Has_Pet.StuID;
+
+-- This query retrieves the first names and ages of students who have pets.",6.186007499694824,Mistral-7B-Instruct-v0.2,unknown,False,False
+77,pets_1,Find the id of the pet owned by student whose last name is ‘Smith’.,SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith',"SELECT Has_Pet.PetID
+FROM Student
+JOIN Has_Pet ON Student.StuID = Has_Pet.StuID
+WHERE Student.LName = 'Smith';",4.8871235847473145,Mistral-7B-Instruct-v0.2,unknown,False,True
+78,pets_1,What is the id of the pet owned by the student whose last name is 'Smith'?,SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith',"SELECT Pets.PetID
+FROM Student AS s
+JOIN Has_Pet AS hp ON s.StuID = hp.StuID
+JOIN Pets AS p ON hp.PetID = p.PetID
+WHERE s.LName = 'Smith';",7.175729274749756,Mistral-7B-Instruct-v0.2,unknown,False,False
+79,pets_1,Find the number of pets for each student who has any pet and student id.,"SELECT count(*) ,  T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid","SELECT COUNT(*) as num_pets FROM Has_Pet
+JOIN Student ON Has_Pet.StuID = Student.StuID;",3.9323081970214844,Mistral-7B-Instruct-v0.2,unknown,False,False
+80,pets_1,"For students who have pets , how many pets does each student have ? list their ids instead of names .","select count(*) ,  t1.stuid from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid group by t1.stuid","SELECT s.StuID, COUNT(hp.PetID) as NumPets
+FROM Student s
+JOIN Has_Pet hp ON s.StuID = hp.StuID
+GROUP BY s.StuID",3.522820234298706,Mistral-7B-Instruct-v0.2,unknown,False,False
+81,pets_1,Find the first name and gender of student who have more than one pet.,"SELECT T1.fname ,  T1.sex FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid HAVING count(*)  >  1","SELECT Student.Fname, Student.Sex
+FROM Student
+INNER JOIN Has_Pet ON Student.StuID = Has_Pet.StuID
+GROUP BY Student.StuID, Student.Fname, Student.Sex
+HAVING COUNT(Has_Pet.PetID) > 1;",3.4916436672210693,Mistral-7B-Instruct-v0.2,unknown,False,True
+82,pets_1,What is the first name and gender of the all the students who have more than one pet?,"SELECT T1.fname ,  T1.sex FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid HAVING count(*)  >  1","SELECT Student.Fname, Student.Sex
+ FROM Student
+ INNER JOIN Has_Pet ON Student.StuID = Has_Pet.StuID
+ GROUP BY Student.StuID, Student.Fname, Student.Sex
+ HAVING COUNT(Has_Pet.PetID) > 1;",6.2334113121032715,Mistral-7B-Instruct-v0.2,unknown,False,True
+83,pets_1,Find the last name of the student who has a cat that is age 3.,SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat',"SELECT Student.LName
+FROM Student
+JOIN Has_Pet ON Student.StuID = Has_Pet.StuID
+JOIN Pets ON Has_Pet.PetID = Pets.PetID
+WHERE Pets.PetType = 'cat' AND Pets.pet_age = 3
+ORDER BY Student.StuID DESC
+LIMIT 1;",9.428833484649658,Mistral-7B-Instruct-v0.2,unknown,False,True
+84,pets_1,What is the last name of the student who has a cat that is 3 years old?,SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat',"SELECT Student.LName
+FROM Student
+JOIN Has_Pet ON Student.StuID = Has_Pet.StuID
+JOIN Pets ON Has_Pet.PetID = Pets.PetID
+WHERE PetType = 'cat' AND pet_age = 3;",7.170795202255249,Mistral-7B-Instruct-v0.2,unknown,False,True
+85,pets_1,Find the average age of students who do not have any pet .,select avg(age) from student where stuid not in (select stuid from has_pet),"SELECT AVG(Student.Age) FROM Student
+WHERE StuID NOT EXISTS (SELECT 1 FROM Has_Pet WHERE Student.StuID = Has_Pet.StuID)",5.045710563659668,Mistral-7B-Instruct-v0.2,unknown,False,False
+86,pets_1,What is the average age for all students who do not own any pets ?,select avg(age) from student where stuid not in (select stuid from has_pet),"SELECT AVG(Student.Age)
+FROM Student
+WHERE Student.StuID NOT IN (
+  SELECT Has_Pet.StuID
+  FROM Has_Pet
+);",4.826000690460205,Mistral-7B-Instruct-v0.2,unknown,False,True
+87,car_1,How many continents are there?,SELECT count(*) FROM CONTINENTS;,SELECT COUNT(*) FROM continents;,1.329841136932373,Mistral-7B-Instruct-v0.2,unknown,True,True
+88,car_1,What is the number of continents?,SELECT count(*) FROM CONTINENTS;,SELECT COUNT(*) FROM continents;,1.259763479232788,Mistral-7B-Instruct-v0.2,unknown,True,True
+89,car_1,"How many countries does each continent have? List the continent id, continent name and the number of countries.","SELECT T1.ContId ,  T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.Continent GROUP BY T1.ContId;","SELECT continents.ContId, continents.Continent, COUNT(*) as NumCountries
+FROM continents
+JOIN countries ON continents.Continent = countries.Country
+GROUP BY continents.Contid;",5.554993629455566,Mistral-7B-Instruct-v0.2,unknown,False,False
+90,car_1,"For each continent, list its id, name, and how many countries it has?","SELECT T1.ContId ,  T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.Continent GROUP BY T1.ContId;","SELECT continents.ContId, continents.Continent, COUNT(*) as NumCountries
+FROM continents
+JOIN countries ON continents.Continent = countries.Country
+GROUP BY continents.Contid;",4.913280487060547,Mistral-7B-Instruct-v0.2,unknown,False,False
+91,car_1,How many countries are listed?,SELECT count(*) FROM COUNTRIES;,SELECT COUNT(*) FROM countries;,0.5570158958435059,Mistral-7B-Instruct-v0.2,unknown,True,True
+92,car_1,How many countries exist?,SELECT count(*) FROM COUNTRIES;,SELECT COUNT(*) FROM countries;,0.5646872520446777,Mistral-7B-Instruct-v0.2,unknown,True,True
+93,car_1,"How many models does each car maker produce? List maker full name, id and the number.","SELECT T1.FullName ,  T1.Id ,  count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id;","SELECT car_makers.FullName AS maker_full_name, car_makers.Id AS maker_id, COUNT(DISTINCT model_list.Model) AS num_models
+FROM car_makers
+JOIN car_makers ON car_makers.Id = model_list.Maker
+GROUP BY car_makers.Id;",3.702589988708496,Mistral-7B-Instruct-v0.2,unknown,False,False
+94,car_1,"What is the full name of each car maker, along with its id and how many models it produces?","SELECT T1.FullName ,  T1.Id ,  count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id;","SELECT car_makers.Id, car_makers.FullName, (SELECT COUNT(*) FROM model_list WHERE model_list.Maker = car_makers.Id) as NumModels
+FROM car_makers;",2.414907932281494,Mistral-7B-Instruct-v0.2,unknown,False,False
+95,car_1,Which model of the car has the minimum horsepower?,SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.horsepower ASC LIMIT 1;,"SELECT cars_data.Model
+FROM cars_data
+ORDER BY horsespower ASC
+LIMIT 1;",1.2527997493743896,Mistral-7B-Instruct-v0.2,unknown,False,False
+96,car_1,What is the model of the car with the smallest amount of horsepower?,SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.horsepower ASC LIMIT 1;,"SELECT model
+FROM car_names
+JOIN cars_data ON car_names.MakeId = cars_data.Id
+ORDER BY horsepower ASC
+LIMIT 1;",1.9669520854949951,Mistral-7B-Instruct-v0.2,unknown,False,True
+97,car_1,Find the model of the car whose weight is below the average weight.,SELECT T1.model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Weight  <  (SELECT avg(Weight) FROM CARS_DATA),"SELECT model
+FROM car_names
+JOIN cars_data ON car_names.MakeId = cars_data.Id
+WHERE weight < (
+  SELECT AVG(weight)
+  FROM cars_data
+)",2.5125677585601807,Mistral-7B-Instruct-v0.2,unknown,False,True
+98,car_1,What is the model for the car with a weight smaller than the average?,SELECT T1.model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Weight  <  (SELECT avg(Weight) FROM CARS_DATA),"SELECT model
+FROM car_names
+JOIN cars_data ON car_names.MakeId = cars_data.Id
+WHERE Weight < (
+  SELECT AVG(Weight)
+  FROM cars_data
+)",2.575165033340454,Mistral-7B-Instruct-v0.2,unknown,False,True
+99,car_1,Find the name of the makers that produced some cars in the year of 1970?,SELECT DISTINCT T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model JOIN CARS_DATA AS T4 ON T3.MakeId  =  T4.id WHERE T4.year  =  '1970';,"SELECT car_makers.Maker
+FROM car_makers
+JOIN car_names ON car_makers.Id = car_names.Maker
+JOIN cars_data ON car_names.Model = cars_data.Model
+WHERE cars_data.Year = 1970;",3.262415885925293,Mistral-7B-Instruct-v0.2,unknown,False,False

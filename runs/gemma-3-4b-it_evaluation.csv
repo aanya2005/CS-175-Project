@@ -1,0 +1,284 @@
+i,db_id,question,gold_sql,pred_sql,latency_s,model,difficulty,EM,EX
+0,concert_singer,How many singers do we have?,SELECT count(*) FROM singer,SELECT count(Singer_ID) FROM singer,1.408921241760254,gemma-3-4b-it,unknown,False,True
+1,concert_singer,What is the total number of singers?,SELECT count(*) FROM singer,SELECT count(Singer_ID) FROM singer,1.1445083618164062,gemma-3-4b-it,unknown,False,True
+2,concert_singer,"Show name, country, age for all singers ordered by age from the oldest to the youngest.","SELECT name ,  country ,  age FROM singer ORDER BY age DESC","SELECT Name, Country, Age FROM singer ORDER BY Age DESC",1.3090999126434326,gemma-3-4b-it,unknown,False,True
+3,concert_singer,"What are the names, countries, and ages for every singer in descending order of age?","SELECT name ,  country ,  age FROM singer ORDER BY age DESC","SELECT Name, Country, Age FROM singer ORDER BY Age DESC",1.383000135421753,gemma-3-4b-it,unknown,False,True
+4,concert_singer,"What is the average, minimum, and maximum age of all singers from France?","SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'","SELECT AVG(Age), MIN(Age), MAX(Age) FROM singer WHERE Country = ""France""",2.063734292984009,gemma-3-4b-it,unknown,False,True
+5,concert_singer,"What is the average, minimum, and maximum age for all French singers?","SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'","SELECT AVG(Age), MIN(Age), MAX(Age) FROM singer WHERE Country = ""France""",2.074547052383423,gemma-3-4b-it,unknown,False,True
+6,concert_singer,Show the name and the release year of the song by the youngest singer.,"SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1","SELECT
+  T1.Song_Name,
+  T1.Song_release_year
+FROM singer AS T1
+INNER JOIN singer_in_concert AS T2
+  ON T1.Singer_ID = T2.Singer_ID
+ORDER BY
+  T1.Age
+LIMIT 1;",5.58057427406311,gemma-3-4b-it,unknown,False,True
+7,concert_singer,What are the names and release years for all the songs of the youngest singer?,"SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1","SELECT Song_Name, Song_release_year FROM singer WHERE Age = (SELECT MIN(Age) FROM singer)",2.3277108669281006,gemma-3-4b-it,unknown,False,True
+8,concert_singer,What are all distinct countries where singers above age 20 are from?,SELECT DISTINCT country FROM singer WHERE age  >  20,SELECT DISTINCT country FROM singer WHERE Age > 20,1.3172645568847656,gemma-3-4b-it,unknown,True,True
+9,concert_singer,What are  the different countries with singers above age 20?,SELECT DISTINCT country FROM singer WHERE age  >  20,SELECT DISTINCT singer.Country FROM singer JOIN singer_in_concert ON singer.Singer_ID = singer_in_concert.Singer_ID WHERE singer.Age > 20,3.2616584300994873,gemma-3-4b-it,unknown,False,False
+10,concert_singer,Show all countries and the number of singers in each country.,"SELECT country ,  count(*) FROM singer GROUP BY country","SELECT singer.Country, COUNT(singer.Country) AS num_singers FROM singer GROUP BY singer.Country",2.1831092834472656,gemma-3-4b-it,unknown,False,True
+11,concert_singer,How many singers are from each country?,"SELECT country ,  count(*) FROM singer GROUP BY country","SELECT Country, COUNT(Singer_ID) FROM singer GROUP BY Country",1.531811237335205,gemma-3-4b-it,unknown,False,True
+12,concert_singer,List all song names by singers above the average age.,SELECT song_name FROM singer WHERE age  >  (SELECT avg(age) FROM singer),SELECT T1.Song_Name FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID WHERE T1.Age > (SELECT AVG(Age) FROM singer),4.090063571929932,gemma-3-4b-it,unknown,False,False
+13,concert_singer,What are all the song names by singers who are older than average?,SELECT song_name FROM singer WHERE age  >  (SELECT avg(age) FROM singer),SELECT T1.Song_Name FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID WHERE T1.Age > (SELECT AVG(Age) FROM singer),4.066186904907227,gemma-3-4b-it,unknown,False,False
+14,concert_singer,Show location and name for all stadiums with a capacity between 5000 and 10000.,"SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000","SELECT Location, Name FROM stadium WHERE Capacity BETWEEN 5000 AND 10000",1.9446978569030762,gemma-3-4b-it,unknown,False,True
+15,concert_singer,What are the locations and names of all stations with capacity between 5000 and 10000?,"SELECT LOCATION ,  name FROM stadium WHERE capacity BETWEEN 5000 AND 10000","SELECT Location, Name FROM stadium WHERE Capacity BETWEEN 5000 AND 10000",1.9677133560180664,gemma-3-4b-it,unknown,False,True
+16,concert_singer,What is the maximum capacity and the average of all stadiums ?,"select max(capacity), average from stadium",SELECT MAX(Average) FROM stadium,0.9659574031829834,gemma-3-4b-it,unknown,False,False
+17,concert_singer,What is the average and maximum capacities for all stadiums ?,"select avg(capacity) ,  max(capacity) from stadium",SELECT AVG(Average) FROM stadium,0.9490046501159668,gemma-3-4b-it,unknown,False,False
+18,concert_singer,What is the name and capacity for the stadium with highest average attendance?,"SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1","SELECT
+  Name
+FROM stadium
+ORDER BY
+  Average
+DESC LIMIT 1;",1.7983224391937256,gemma-3-4b-it,unknown,False,False
+19,concert_singer,What is the name and capacity for the stadium with the highest average attendance?,"SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1","SELECT Name, Average FROM stadium ORDER BY Average DESC LIMIT 1",1.386512279510498,gemma-3-4b-it,unknown,False,False
+20,concert_singer,How many concerts are there in year 2014 or 2015?,SELECT count(*) FROM concert WHERE YEAR  =  2014 OR YEAR  =  2015,SELECT count(concert_ID) FROM concert WHERE Year = 2014 OR Year = 2015,2.2392749786376953,gemma-3-4b-it,unknown,False,True
+21,concert_singer,How many concerts occurred in 2014 or 2015?,SELECT count(*) FROM concert WHERE YEAR  =  2014 OR YEAR  =  2015,SELECT count(concert_ID) FROM concert WHERE Year = 2014 OR Year = 2015,2.2616488933563232,gemma-3-4b-it,unknown,False,True
+22,concert_singer,Show the stadium name and the number of concerts in each stadium.,"SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id","SELECT stadium.Name, COUNT(concert.concert_ID) AS Number_of_Concerts FROM stadium JOIN concert ON stadium.Stadium_ID = concert.Stadium_ID GROUP BY stadium.Name",3.431208372116089,gemma-3-4b-it,unknown,False,False
+23,concert_singer,"For each stadium, how many concerts play there?","SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id","SELECT stadium.Name, COUNT(concert.concert_ID) AS Number_of_Concerts FROM stadium JOIN concert ON stadium.Stadium_ID = concert.Stadium_ID GROUP BY stadium.Name",3.3969545364379883,gemma-3-4b-it,unknown,False,False
+24,concert_singer,Show the stadium name and capacity with most number of concerts in year 2014 or after.,"SELECT T2.name ,  T2.capacity FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  >=  2014 GROUP BY T2.stadium_id ORDER BY count(*) DESC LIMIT 1","SELECT stadium.Name, stadium.Capacity FROM stadium JOIN concert ON stadium.Stadium_ID = concert.Stadium_ID WHERE concert.Year >= 2014",2.90518856048584,gemma-3-4b-it,unknown,False,False
+25,concert_singer,What is the name and capacity of the stadium with the most concerts after 2013 ?,"select t2.name ,  t2.capacity from concert as t1 join stadium as t2 on t1.stadium_id  =  t2.stadium_id where t1.year  >  2013 group by t2.stadium_id order by count(*) desc limit 1","SELECT stadium.Name, stadium.Capacity FROM stadium JOIN concert ON stadium.Stadium_ID = concert.Stadium_ID WHERE concert.Year > 2013 GROUP BY stadium.Stadium_ID ORDER BY COUNT(concert.concert_ID) DESC LIMIT 1",4.446967601776123,gemma-3-4b-it,unknown,False,True
+26,concert_singer,Which year has most number of concerts?,SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1,SELECT Year FROM concert GROUP BY Year ORDER BY COUNT(*) DESC LIMIT 1,1.5937800407409668,gemma-3-4b-it,unknown,True,True
+27,concert_singer,What is the year that had the most concerts?,SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1,SELECT Year FROM concert GROUP BY Year ORDER BY COUNT(*) DESC LIMIT 1,1.5757241249084473,gemma-3-4b-it,unknown,True,True
+28,concert_singer,Show the stadium names without any concert.,SELECT name FROM stadium WHERE stadium_id NOT IN (SELECT stadium_id FROM concert),SELECT Name FROM stadium WHERE concert_ID IS NULL,1.199514627456665,gemma-3-4b-it,unknown,False,False
+29,concert_singer,What are the names of the stadiums without any concerts?,SELECT name FROM stadium WHERE stadium_id NOT IN (SELECT stadium_id FROM concert),SELECT Name FROM stadium WHERE Stadium_ID NOT IN (SELECT Stadium_ID FROM concert),1.7749192714691162,gemma-3-4b-it,unknown,True,True
+30,concert_singer,Show countries where a singer above age 40 and a singer below 30 are from.,SELECT country FROM singer WHERE age  >  40 INTERSECT SELECT country FROM singer WHERE age  <  30,SELECT DISTINCT singer.Country FROM singer JOIN singer_in_concert ON singer.Singer_ID = singer_in_concert.Singer_ID WHERE singer.Age > 40 AND singer.Age < 30,3.692265033721924,gemma-3-4b-it,unknown,False,False
+31,concert_singer,Show names for all stadiums except for stadiums having a concert in year 2014.,SELECT name FROM stadium EXCEPT SELECT T2.name FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  =  2014,SELECT Name FROM stadium WHERE concert_ID NOT IN (SELECT concert_ID FROM concert WHERE Year = 2014),2.356825113296509,gemma-3-4b-it,unknown,False,False
+32,concert_singer,What are the names of all stadiums that did not have a concert in 2014?,SELECT name FROM stadium EXCEPT SELECT T2.name FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  =  2014,SELECT stadium.Name FROM stadium WHERE stadium.Stadium_ID NOT IN (SELECT stadium.Stadium_ID FROM concert WHERE concert.Year = 2014),2.9356915950775146,gemma-3-4b-it,unknown,False,False
+33,concert_singer,Show the name and theme for all concerts and the number of singers in each concert.,"SELECT T2.concert_name ,  T2.theme ,  count(*) FROM singer_in_concert AS T1 JOIN concert AS T2 ON T1.concert_id  =  T2.concert_id GROUP BY T2.concert_id","SELECT c.concert_Name, c.Theme, COUNT(s.Singer_ID) AS Number_of_singers FROM concert AS c JOIN singer_in_concert AS sic ON c.concert_ID = sic.concert_ID JOIN singer AS s ON sic.Singer_ID = s.Singer_ID GROUP BY c.concert_Name, c.Theme",6.074549198150635,gemma-3-4b-it,unknown,False,False
+34,concert_singer,"What are the names , themes , and number of singers for every concert ?","select t2.concert_name ,  t2.theme ,  count(*) from singer_in_concert as t1 join concert as t2 on t1.concert_id  =  t2.concert_id group by t2.concert_id","SELECT T1.concert_Name, T1.Theme, COUNT(T2.Singer_ID) AS Number_of_singers FROM concert AS T1 JOIN singer_in_concert AS T2 ON T1.concert_ID = T2.concert_ID GROUP BY T1.concert_Name, T1.Theme",5.609872341156006,gemma-3-4b-it,unknown,False,False
+35,concert_singer,List singer names and number of concerts for each singer.,"SELECT T2.name ,  count(*) FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id GROUP BY T2.singer_id","SELECT s.Name, count(c.concert_ID) AS number_of_concerts FROM singer s JOIN singer_in_concert sic ON s.Singer_ID = sic.Singer_ID JOIN concert c ON sic.concert_ID = c.concert_ID GROUP BY s.Name",5.481486082077026,gemma-3-4b-it,unknown,False,False
+36,concert_singer,What are the names of the singers and number of concerts for each person?,"SELECT T2.name ,  count(*) FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id GROUP BY T2.singer_id","SELECT T1.Name, COUNT(T2.concert_ID) FROM singer AS T1 INNER JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID GROUP BY T1.Name",4.089940071105957,gemma-3-4b-it,unknown,False,False
+37,concert_singer,List all singer names in concerts in year 2014.,SELECT T2.name FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id JOIN concert AS T3 ON T1.concert_id  =  T3.concert_id WHERE T3.year  =  2014,SELECT DISTINCT T1.Name FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID JOIN concert AS T3 ON T2.concert_ID = T3.concert_ID WHERE T3.Year = 2014,5.512096405029297,gemma-3-4b-it,unknown,False,False
+38,concert_singer,What are the names of the singers who performed in a concert in 2014?,SELECT T2.name FROM singer_in_concert AS T1 JOIN singer AS T2 ON T1.singer_id  =  T2.singer_id JOIN concert AS T3 ON T1.concert_id  =  T3.concert_id WHERE T3.year  =  2014,SELECT DISTINCT T1.Name FROM singer AS T1 JOIN singer_in_concert AS T2 ON T1.Singer_ID = T2.Singer_ID JOIN concert AS T3 ON T2.concert_ID = T3.concert_ID WHERE T3.Year = 2014,5.693893194198608,gemma-3-4b-it,unknown,False,False
+39,concert_singer,what is the name and nation of the singer who have a song having 'Hey' in its name?,"SELECT name ,  country FROM singer WHERE song_name LIKE '%Hey%'","SELECT DISTINCT
+  s.Name,
+  s.Country
+FROM singer AS s
+JOIN singer_in_concert AS sic
+  ON s.Singer_ID = sic.Singer_ID
+JOIN concert AS c
+  ON sic.concert_ID = c.concert_ID
+WHERE
+  s.Song_Name LIKE '%Hey%';",5.786714315414429,gemma-3-4b-it,unknown,False,True
+40,concert_singer,What is the name and country of origin of every singer who has a song with the word 'Hey' in its title?,"SELECT name ,  country FROM singer WHERE song_name LIKE '%Hey%'","SELECT DISTINCT singer.Name, singer.Country FROM singer JOIN singer_in_concert ON singer.Singer_ID = singer_in_concert.Singer_ID JOIN concert ON singer_in_concert.concert_ID = concert.concert_ID WHERE singer.Song_Name LIKE '%Hey%'",4.904064893722534,gemma-3-4b-it,unknown,False,True
+41,concert_singer,Find the name and location of the stadiums which some concerts happened in the years of both 2014 and 2015.,"SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2014 INTERSECT SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2015","SELECT stadium.Name, stadium.Location FROM stadium JOIN concert ON stadium.Stadium_ID = concert.Stadium_ID WHERE concert.Year = 2014 OR concert.Year = 2015;",3.930354118347168,gemma-3-4b-it,unknown,False,False
+42,concert_singer,What are the names and locations of the stadiums that had concerts that occurred in both 2014 and 2015?,"SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2014 INTERSECT SELECT T2.name ,  T2.location FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.Year  =  2015","SELECT stadium.Name, stadium.Location FROM stadium JOIN concert ON stadium.Stadium_ID = concert.Stadium_ID WHERE concert.Year = 2014 INTERSECT SELECT stadium.Name, stadium.Location FROM stadium JOIN concert ON stadium.Stadium_ID = concert.Stadium_ID WHERE concert.Year = 2015",5.5719404220581055,gemma-3-4b-it,unknown,False,True
+43,concert_singer,Find the number of concerts happened in the stadium with the highest capacity .,select count(*) from concert where stadium_id = (select stadium_id from stadium order by capacity desc limit 1),"SELECT
+  COUNT(T1.concert_ID)
+FROM concert AS T1
+JOIN stadium AS T2
+  ON T1.Stadium_ID = T2.Stadium_ID
+ORDER BY
+  T2.Capacity DESC
+LIMIT 1;",4.487408638000488,gemma-3-4b-it,unknown,False,False
+44,concert_singer,What are the number of concerts that occurred in the stadium with the largest capacity ?,select count(*) from concert where stadium_id = (select stadium_id from stadium order by capacity desc limit 1),"SELECT
+  COUNT(concert_ID)
+FROM concert
+WHERE
+  Stadium_ID = (
+    SELECT
+      Stadium_ID
+    FROM stadium
+    ORDER
+      BY
+      Capacity DESC
+    LIMIT 1
+  );",4.098086357116699,gemma-3-4b-it,unknown,False,True
+45,pets_1,Find the number of pets whose weight is heavier than 10.,SELECT count(*) FROM pets WHERE weight  >  10,SELECT count(PetID) FROM Pets WHERE weight > 10,1.443678855895996,gemma-3-4b-it,unknown,False,True
+46,pets_1,How many pets have a greater weight than 10?,SELECT count(*) FROM pets WHERE weight  >  10,SELECT count(PetID) FROM Pets WHERE weight > 10,1.470555305480957,gemma-3-4b-it,unknown,False,True
+47,pets_1,Find the weight of the youngest dog.,SELECT weight FROM pets ORDER BY pet_age LIMIT 1,SELECT T1.weight FROM Pets AS T1 JOIN Has_Pet AS T2 ON T1.PetID = T2.PetID WHERE T1.PetType = 'dog' ORDER BY T1.pet_age LIMIT 1,4.093429803848267,gemma-3-4b-it,unknown,False,True
+48,pets_1,How much does the youngest dog weigh?,SELECT weight FROM pets ORDER BY pet_age LIMIT 1,SELECT T1.weight FROM Pets AS T1 JOIN Has_Pet AS T2 ON T1.PetID = T2.PetID WHERE T1.PetType = 'dog' ORDER BY T1.pet_age ASC LIMIT 1,4.1311705112457275,gemma-3-4b-it,unknown,False,True
+49,pets_1,Find the maximum weight for each type of pet. List the maximum weight and pet type.,"SELECT max(weight) ,  petType FROM pets GROUP BY petType","SELECT PetType, MAX(weight) FROM Pets GROUP BY PetType",1.5096712112426758,gemma-3-4b-it,unknown,False,False
+50,pets_1,List the maximum weight and type for each type of pet.,"SELECT max(weight) ,  petType FROM pets GROUP BY petType","SELECT PetType, MAX(weight) FROM Pets GROUP BY PetType",1.4512627124786377,gemma-3-4b-it,unknown,False,False
+51,pets_1,Find number of pets owned by students who are older than 20.,SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.age  >  20,"SELECT
+  COUNT(T1.PetID)
+FROM Pets AS T1
+INNER JOIN Has_Pet AS T2
+  ON T1.PetID = T2.PetID
+INNER JOIN Student AS T3
+  ON T2.StuID = T3.StuID
+WHERE
+  T3.Age > 20;",5.835734844207764,gemma-3-4b-it,unknown,False,True
+52,pets_1,How many pets are owned by students that have an age greater than 20?,SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.age  >  20,"SELECT
+  COUNT(T1.PetID)
+FROM Pets AS T1
+INNER JOIN Has_Pet AS T2
+  ON T1.PetID = T2.PetID
+INNER JOIN Student AS T3
+  ON T2.StuID = T3.StuID
+WHERE
+  T3.Age > 20;",5.902851819992065,gemma-3-4b-it,unknown,False,True
+53,pets_1,Find the number of dog pets that are raised by female students (with sex F).,SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog',SELECT COUNT(T1.PetID) FROM Pets AS T1 JOIN Has_Pet AS T2 ON T1.PetID = T2.PetID JOIN Student AS T3 ON T2.StuID = T3.StuID WHERE T1.PetType = 'Dog' AND T3.Sex = 'F',5.508595943450928,gemma-3-4b-it,unknown,False,False
+54,pets_1,How many dog pets are raised by female students?,SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog',"SELECT
+  COUNT(T1.PetID)
+FROM Pets AS T1
+INNER JOIN Has_Pet AS T2
+  ON T1.PetID = T2.PetID
+INNER JOIN Student AS T3
+  ON T2.StuID = T3.StuID
+WHERE
+  T1.PetType = 'dog' AND T3.Sex = 'female';",6.5117857456207275,gemma-3-4b-it,unknown,False,False
+55,pets_1,Find the number of distinct type of pets.,SELECT count(DISTINCT pettype) FROM pets,SELECT COUNT(DISTINCT PetType) FROM Pets,1.169912576675415,gemma-3-4b-it,unknown,True,True
+56,pets_1,How many different types of pet are there?,SELECT count(DISTINCT pettype) FROM pets,SELECT count(distinct PetType) FROM Pets,1.0860002040863037,gemma-3-4b-it,unknown,True,True
+57,pets_1,Find the first name of students who have cat or dog pet.,SELECT DISTINCT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' OR T3.pettype  =  'dog',"SELECT DISTINCT T1.Fname FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID WHERE T3.PetType IN ('cat', 'dog');",4.845208644866943,gemma-3-4b-it,unknown,False,True
+58,pets_1,What are the first names of every student who has a cat or dog as a pet?,SELECT DISTINCT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' OR T3.pettype  =  'dog',"SELECT DISTINCT T1.Fname FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID WHERE T3.PetType = ""cat"" OR T3.PetType = ""dog""",5.350855350494385,gemma-3-4b-it,unknown,False,True
+59,pets_1,Find the first name of students who have both cat and dog pets .,select t1.fname from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid join pets as t3 on t3.petid  =  t2.petid where t3.pettype  =  'cat' intersect select t1.fname from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid join pets as t3 on t3.petid  =  t2.petid where t3.pettype  =  'dog',SELECT DISTINCT T1.Fname FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID WHERE T3.PetType = 'cat' AND T3.PetType = 'dog',5.3629679679870605,gemma-3-4b-it,unknown,False,True
+60,pets_1,What are the students' first names who have both cats and dogs as pets?,SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' INTERSECT SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog',"SELECT DISTINCT
+  T1.Fname
+FROM Student AS T1
+INNER JOIN Has_Pet AS T2
+  ON T1.StuID = T2.StuID
+INNER JOIN Pets AS T3
+  ON T2.PetID = T3.PetID
+WHERE
+  T3.PetType = 'cat'
+INTERSECT
+SELECT DISTINCT
+  T1.Fname
+FROM Student AS T1
+INNER JOIN Has_Pet AS T2
+  ON T1.StuID = T2.StuID
+INNER JOIN Pets AS T3
+  ON T2.PetID = T3.PetID
+WHERE
+  T3.PetType = '",10.895636558532715,gemma-3-4b-it,unknown,False,False
+61,pets_1,Find the major and age of students who do not have a cat pet.,"SELECT major ,  age FROM student WHERE stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')","SELECT DISTINCT Major, Age FROM Student WHERE StuID NOT IN (SELECT StuID FROM Has_Pet WHERE Pets.PetType = 'cat');",2.5379579067230225,gemma-3-4b-it,unknown,False,False
+62,pets_1,"What major is every student who does not own a cat as a pet, and also how old are they?","SELECT major ,  age FROM student WHERE stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')","SELECT DISTINCT S.Major, S.Age FROM Student AS S JOIN Has_Pet AS HP ON S.StuID = HP.StuID JOIN Pets AS P ON HP.PetID = P.PetID WHERE P.PetType != 'cat'",4.216395139694214,gemma-3-4b-it,unknown,False,False
+63,pets_1,Find the id of students who do not have a cat pet.,SELECT stuid FROM student EXCEPT SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat',SELECT StuID FROM Student WHERE StuID NOT IN (SELECT StuID FROM Has_Pet WHERE Pets.PetType = 'cat');,2.4094629287719727,gemma-3-4b-it,unknown,False,False
+64,pets_1,What are the ids of the students who do not own cats as pets?,SELECT stuid FROM student EXCEPT SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat',SELECT StuID FROM Student WHERE StuID NOT IN (SELECT StuID FROM Has_Pet INNER JOIN Pets ON Has_Pet.PetID = Pets.PetID WHERE Pets.PetType = 'cat');,3.4892001152038574,gemma-3-4b-it,unknown,False,True
+65,pets_1,Find the first name and age of students who have a dog but do not have a cat as a pet.,"SELECT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog' AND T1.stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')","SELECT T1.Fname, T1.Age FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID WHERE T3.PetType = 'dog' AND T2.PetID NOT IN (SELECT PetID FROM Pets WHERE PetType = 'cat');",6.458299875259399,gemma-3-4b-it,unknown,False,True
+66,pets_1,What is the first name of every student who has a dog but does not have a cat?,"SELECT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog' AND T1.stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')","SELECT
+  T1.Fname
+FROM Student AS T1
+INNER JOIN Has_Pet AS T2
+  ON T1.StuID = T2.StuID
+INNER JOIN Pets AS T3
+  ON T2.PetID = T3.PetID
+WHERE
+  T3.PetType = 'Dog'
+  AND NOT EXISTS (
+    SELECT
+      1
+    FROM Has_Pet AS T4
+    INNER JOIN Pets AS T5
+      ON T4.PetID = T5.PetID
+    WHERE
+      T4.StuID = T1.StuID
+      AND T5.PetType = 'Cat'
+  );",10.872792959213257,gemma-3-4b-it,unknown,False,False
+67,pets_1,Find the type and weight of the youngest pet.,"SELECT pettype ,  weight FROM pets ORDER BY pet_age LIMIT 1","SELECT T1.PetType, T1.weight FROM Pets AS T1 JOIN Has_Pet AS T2 ON T1.PetID = T2.PetID WHERE T1.pet_age = (SELECT MIN(pet_age) FROM Pets)",4.3559722900390625,gemma-3-4b-it,unknown,False,True
+68,pets_1,"What type of pet is the youngest animal, and how much does it weigh?","SELECT pettype ,  weight FROM pets ORDER BY pet_age LIMIT 1","SELECT T1.PetType, T1.weight FROM Pets AS T1 JOIN Has_Pet AS T2 ON T1.PetID = T2.PetID WHERE T1.pet_age = (SELECT MIN(pet_age) FROM Pets)",4.369682312011719,gemma-3-4b-it,unknown,False,True
+69,pets_1,Find the id and weight of all pets whose age is older than 1.,"SELECT petid ,  weight FROM pets WHERE pet_age  >  1","SELECT Pets.PetID, Pets.weight FROM Pets WHERE Pets.pet_age > 1",1.8997225761413574,gemma-3-4b-it,unknown,False,True
+70,pets_1,What is the id and weight of every pet who is older than 1?,"SELECT petid ,  weight FROM pets WHERE pet_age  >  1","SELECT Pets.PetID, Pets.weight FROM Pets WHERE Pets.pet_age > 1",1.9008612632751465,gemma-3-4b-it,unknown,False,True
+71,pets_1,Find the average and maximum age for each type of pet.,"SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype","SELECT PetType, AVG(pet_age) AS AverageAge, MAX(pet_age) AS MaxAge FROM Pets GROUP BY PetType",2.497926950454712,gemma-3-4b-it,unknown,False,False
+72,pets_1,What is the average and maximum age for each pet type?,"SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype","SELECT PetType, AVG(pet_age) AS AverageAge, MAX(pet_age) AS MaxAge FROM Pets GROUP BY PetType",2.5588269233703613,gemma-3-4b-it,unknown,False,False
+73,pets_1,Find the average weight for each pet type.,"SELECT avg(weight) ,  pettype FROM pets GROUP BY pettype","SELECT PetType, AVG(weight) FROM Pets GROUP BY PetType",1.4669477939605713,gemma-3-4b-it,unknown,False,False
+74,pets_1,What is the average weight for each type of pet?,"SELECT avg(weight) ,  pettype FROM pets GROUP BY pettype","SELECT PetType, AVG(weight) FROM Pets GROUP BY PetType",1.4205474853515625,gemma-3-4b-it,unknown,False,False
+75,pets_1,Find the first name and age of students who have a pet.,"SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid","SELECT T1.Fname, T1.Age FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID",4.165714263916016,gemma-3-4b-it,unknown,False,False
+76,pets_1,What are the different first names and ages of the students who do have pets?,"SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid","SELECT DISTINCT T1.Fname, T1.Age FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID",4.2479894161224365,gemma-3-4b-it,unknown,False,True
+77,pets_1,Find the id of the pet owned by student whose last name is ‘Smith’.,SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith',"SELECT
+  Pets.PetID
+FROM Pets
+INNER JOIN Has_Pet
+  ON Pets.PetID = Has_Pet.PetID
+INNER JOIN Student
+  ON Has_Pet.StuID = Student.StuID
+WHERE
+  Student.LName = 'Smith';",4.779462814331055,gemma-3-4b-it,unknown,False,True
+78,pets_1,What is the id of the pet owned by the student whose last name is 'Smith'?,SELECT T2.petid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid WHERE T1.Lname  =  'Smith',"SELECT
+  Pets.PetID
+FROM Pets
+INNER JOIN Has_Pet
+  ON Pets.PetID = Has_Pet.PetID
+INNER JOIN Student
+  ON Has_Pet.StuID = Student.StuID
+WHERE
+  Student.LName = 'Smith';",4.779551029205322,gemma-3-4b-it,unknown,False,True
+79,pets_1,Find the number of pets for each student who has any pet and student id.,"SELECT count(*) ,  T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid",SELECT count(StuID) FROM Has_Pet GROUP BY StuID,1.4685754776000977,gemma-3-4b-it,unknown,False,False
+80,pets_1,"For students who have pets , how many pets does each student have ? list their ids instead of names .","select count(*) ,  t1.stuid from student as t1 join has_pet as t2 on t1.stuid  =  t2.stuid group by t1.stuid","SELECT s.StuID, COUNT(h.PetID) AS num_pets FROM Student AS s JOIN Has_Pet AS h ON s.StuID = h.StuID GROUP BY s.StuID",3.5716426372528076,gemma-3-4b-it,unknown,False,False
+81,pets_1,Find the first name and gender of student who have more than one pet.,"SELECT T1.fname ,  T1.sex FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid HAVING count(*)  >  1","SELECT T1.Fname, T1.Sex FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID GROUP BY T1.StuID HAVING COUNT(T2.PetID) > 1",4.412237644195557,gemma-3-4b-it,unknown,False,True
+82,pets_1,What is the first name and gender of the all the students who have more than one pet?,"SELECT T1.fname ,  T1.sex FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid HAVING count(*)  >  1","SELECT DISTINCT T1.Fname, T1.Sex FROM Student AS T1 JOIN Has_Pet AS T2 ON T1.StuID = T2.StuID JOIN Pets AS T3 ON T2.PetID = T3.PetID GROUP BY T1.StuID HAVING COUNT(T2.PetID) > 1",5.660043239593506,gemma-3-4b-it,unknown,False,True
+83,pets_1,Find the last name of the student who has a cat that is age 3.,SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat',"SELECT
+  T1.LName
+FROM Student AS T1
+INNER JOIN Has_Pet AS T2
+  ON T1.StuID = T2.StuID
+INNER JOIN Pets AS T3
+  ON T2.PetID = T3.PetID
+WHERE
+  T3.PetType = 'cat' AND T3.pet_age = 3;",6.392487049102783,gemma-3-4b-it,unknown,False,True
+84,pets_1,What is the last name of the student who has a cat that is 3 years old?,SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat',"SELECT
+  T1.LName
+FROM Student AS T1
+INNER JOIN Has_Pet AS T2
+  ON T1.StuID = T2.StuID
+INNER JOIN Pets AS T3
+  ON T2.PetID = T3.PetID
+WHERE
+  T3.PetType = 'cat' AND T3.pet_age = 3;",6.387679576873779,gemma-3-4b-it,unknown,False,True
+85,pets_1,Find the average age of students who do not have any pet .,select avg(age) from student where stuid not in (select stuid from has_pet),SELECT avg(Age) FROM Student WHERE StuID NOT IN (SELECT StuID FROM Has_Pet);,2.074187994003296,gemma-3-4b-it,unknown,False,True
+86,pets_1,What is the average age for all students who do not own any pets ?,select avg(age) from student where stuid not in (select stuid from has_pet),SELECT avg(Age) FROM Student WHERE StuID NOT IN (SELECT StuID FROM Has_Pet);,1.9837803840637207,gemma-3-4b-it,unknown,False,True
+87,car_1,How many continents are there?,SELECT count(*) FROM CONTINENTS;,SELECT count(distinct continents.ContId) FROM continents,1.261329174041748,gemma-3-4b-it,unknown,False,True
+88,car_1,What is the number of continents?,SELECT count(*) FROM CONTINENTS;,SELECT count(distinct continents.ContId) FROM continents,1.236243486404419,gemma-3-4b-it,unknown,False,True
+89,car_1,"How many countries does each continent have? List the continent id, continent name and the number of countries.","SELECT T1.ContId ,  T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.Continent GROUP BY T1.ContId;","SELECT continents.ContId, continents.Continent, COUNT(countries.CountryId) AS NumberOfCountries FROM continents JOIN countries ON continents.ContId = countries.Continent GROUP BY continents.ContId, continents.Continent",3.6402485370635986,gemma-3-4b-it,unknown,False,True
+90,car_1,"For each continent, list its id, name, and how many countries it has?","SELECT T1.ContId ,  T1.Continent ,  count(*) FROM CONTINENTS AS T1 JOIN COUNTRIES AS T2 ON T1.ContId  =  T2.Continent GROUP BY T1.ContId;","SELECT continents.ContId, continents.Continent, COUNT(countries.CountryId) AS num_countries FROM continents JOIN countries ON continents.ContId = countries.Continent GROUP BY continents.ContId, continents.Continent;",3.6920547485351562,gemma-3-4b-it,unknown,False,True
+91,car_1,How many countries are listed?,SELECT count(*) FROM COUNTRIES;,SELECT COUNT(*) FROM countries,0.834031343460083,gemma-3-4b-it,unknown,False,True
+92,car_1,How many countries exist?,SELECT count(*) FROM COUNTRIES;,SELECT count(CountryId) FROM countries,1.0174355506896973,gemma-3-4b-it,unknown,False,True
+93,car_1,"How many models does each car maker produce? List maker full name, id and the number.","SELECT T1.FullName ,  T1.Id ,  count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id;","SELECT
+  car_makers.FullName,
+  car_makers.Id,
+  COUNT(model_list.Model)
+FROM car_makers
+JOIN model_list
+  ON car_makers.Id = model_list.Maker
+GROUP BY
+  car_makers.Id,
+  car_makers.FullName;",5.550524473190308,gemma-3-4b-it,unknown,False,True
+94,car_1,"What is the full name of each car maker, along with its id and how many models it produces?","SELECT T1.FullName ,  T1.Id ,  count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id;","SELECT
+  car_makers.FullName,
+  car_makers.Id,
+  COUNT(model_list.Model)
+FROM car_makers
+JOIN model_list
+  ON car_makers.Id = model_list.Maker
+GROUP BY
+  car_makers.Id,
+  car_makers.FullName;",5.5939414501190186,gemma-3-4b-it,unknown,False,True
+95,car_1,Which model of the car has the minimum horsepower?,SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.horsepower ASC LIMIT 1;,SELECT Model FROM model_list INNER JOIN car_names ON model_list.Model = car_names.Model ORDER BY Horsepower ASC LIMIT 1,2.7978744506835938,gemma-3-4b-it,unknown,False,False
+96,car_1,What is the model of the car with the smallest amount of horsepower?,SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.horsepower ASC LIMIT 1;,SELECT T1.Model FROM model_list AS T1 JOIN cars_data AS T2 ON T1.ModelId = T2.MakeId ORDER BY T2.Horsepower ASC LIMIT 1,3.6784067153930664,gemma-3-4b-it,unknown,False,False
+97,car_1,Find the model of the car whose weight is below the average weight.,SELECT T1.model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Weight  <  (SELECT avg(Weight) FROM CARS_DATA),"SELECT
+  T1.Model
+FROM model_list AS T1
+INNER JOIN cars_data AS T2
+  ON T1.ModelId = T2.Id
+WHERE
+  T2.Weight < (
+    SELECT
+      AVG(Weight)
+    FROM cars_data
+  );",5.583878993988037,gemma-3-4b-it,unknown,False,False
+98,car_1,What is the model for the car with a weight smaller than the average?,SELECT T1.model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.Weight  <  (SELECT avg(Weight) FROM CARS_DATA),"SELECT
+  Model
+FROM model_list
+JOIN car_names
+  ON model_list.Model = car_names.Model
+JOIN cars_data
+  ON car_names.MakeId = cars_data.Id
+WHERE
+  cars_data.Weight < (
+    SELECT
+      AVG(Weight)
+    FROM cars_data
+  );",11.414667844772339,gemma-3-4b-it,unknown,False,False
+99,car_1,Find the name of the makers that produced some cars in the year of 1970?,SELECT DISTINCT T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model JOIN CARS_DATA AS T4 ON T3.MakeId  =  T4.id WHERE T4.year  =  '1970';,"SELECT DISTINCT
+  T1.FullName
+FROM car_makers AS T1
+JOIN model_list AS T2
+  ON T1.Id = T2.Maker
+JOIN car_names AS T3
+  ON T2.Model = T3.Model
+JOIN cars_data AS T4
+  ON T3.MakeId = T4.Id
+WHERE
+  T4.Year = 1970",7.333599328994751,gemma-3-4b-it,unknown,False,False

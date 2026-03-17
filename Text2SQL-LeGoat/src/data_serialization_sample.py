@@ -1,3 +1,31 @@
+"""
+Description:
+This script loads database schema information from the Spider dataset (tables.json)
+and converts it into a structured, human-readable text format for use in
+schema-aware Text-to-SQL prompting.
+
+The script:
+- Loads all database schemas from tables.json
+- Retrieves a specific database schema using its db_id
+- Serializes the schema into a textual representation including:
+    - Table names
+    - Column names
+    - Primary key (PK) annotations
+    - Foreign key (FK) relationships
+    - Explicit relationship mappings between tables
+
+Purpose:
+This serialized schema is used as input to language models in order to provide
+explicit relational context (tables, columns, and joins), which improves the
+model's ability to generate correct SQL queries.
+
+Input:
+- spider/spider_data/tables.json : Spider dataset schema definitions
+
+Output:
+- A formatted string representation of a database schema, suitable for
+  inclusion in Text-to-SQL prompts
+"""
 import json
 from pathlib import Path
 from typing import Dict, List, Tuple

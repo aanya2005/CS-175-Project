@@ -1,3 +1,15 @@
+"""This script analyzes the Spider development dataset (dev.json) and visualizes
+the distribution of natural language question lengths.
+It loads the dataset, computes the number of tokens in each question, and
+generates a histogram showing how question lengths are distributed across
+the dataset.
+
+Purpose:
+This analysis helps us understand the linguistic complexity of input queries
+in the Text-to-SQL task. Although most questions are relatively short, they
+often require complex SQL reasoning (e.g., joins, aggregation), which motivates
+the need for schema-aware prompting."""
+
 import json
 import matplotlib.pyplot as plt
 

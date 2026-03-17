@@ -27,7 +27,9 @@ We evaluate our system using:
 - small ablation studies on prompt and schema design
 
 ---
+## Repository Structure
 
+```text
 CS-175-PROJECT/
 ├── runs/
 │   ├── gemma-3-4b-it_dev_first100.jsonl

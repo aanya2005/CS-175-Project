@@ -1,3 +1,13 @@
+"""
+Description:
+This script performs basic exploratory analysis on the Spider dataset.
+It computes statistics on question lengths, SQL keyword frequency,
+and database schema characteristics (e.g., number of tables per database).
+
+Purpose:
+Provides a quick overview of dataset structure and complexity to support
+Text-to-SQL modeling and analysis.
+"""
 import json
 import pandas as pd
 from collections import Counter

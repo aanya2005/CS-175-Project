@@ -1,3 +1,9 @@
+"""This file implements the core preprocessing and prompt construction pipeline for the Text-to-SQL system. 
+It loads and normalizes database schemas from the Spider dataset, extracting tables, columns, primary keys, and foreign key relationships into a structured format. 
+It also supports schema reduction by selecting relevant tables based on the input question and expanding them using foreign key links to preserve valid join paths.
+The file then serializes the schema into a text representation and constructs schema-aware prompts for the language model. 
+It supports multiple prompt styles, including plain instruction prompts and chat-based templates, enabling controlled experiments on prompt formatting. 
+This module prepares structured schema context and generates model-ready inputs for SQL generation."""
 import json
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
